@@ -1,5 +1,13 @@
 #include "Fila.h"
 
+Fila::Fila() {
+    this->primeiro = nullptr;
+    this->ultimo = nullptr;
+    this->tamanho = 0;
+}
+
+Fila::~Fila(){}
+
 void Fila::push(Processo* processo)
 {
     Nodo* novo = new Nodo();
@@ -68,4 +76,8 @@ Processo* Fila::findByPid(int pid)
     }
 
     return nullptr; // não encontrado
+}
+
+Nodo* Fila::getPrimeiro() const {
+    return primeiro;
 }

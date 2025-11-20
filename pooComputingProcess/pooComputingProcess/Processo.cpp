@@ -1,17 +1,23 @@
 #include "Processo.h"
 
-using namespace std;
+int Processo::nextPid = 1;
 
 Processo::Processo() {}
 Processo::~Processo() {}
 
-void Processo::executar()
+Processo::Processo(int tipo)
 {
-	// TODO implementar
+	this->pid = nextPid++;
+	this->tipo = tipo;
 }
 
 int Processo::getPid() const
 {
 	return this->pid;
+}
+
+int Processo::getTipo() const
+{
+	return this->tipo;
 }
 

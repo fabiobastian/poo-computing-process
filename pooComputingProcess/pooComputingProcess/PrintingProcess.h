@@ -1,12 +1,17 @@
 #pragma once
 #include "Processo.h"
+#include "Fila.h"
 
-class PrintingProcess : Processo
+class PrintingProcess : public Processo
 {
+private:
+	Fila* fila;
+
 public:
 	PrintingProcess();
 	~PrintingProcess();
+	PrintingProcess(Fila* fila);
 
-	void executar() override;
+	void execute() override;
 };
 
