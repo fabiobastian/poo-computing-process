@@ -28,13 +28,26 @@ int main()
         << fila.front()->getPid() << endl;
 
     // Procurando um processo específico
-    int buscaPid = 20;
+    int buscaPid = 2;
     Processo* achado = fila.findByPid(buscaPid);
 
     if (achado != nullptr)
         cout << "Processo encontrado PID = " << achado->getPid() << endl;
     else
         cout << "Processo PID " << buscaPid << " não encontrado.\n";
+
+
+    Processo* downcasting = fila.front();
+
+    if (downcasting->getTipo() == 4) { // Exemplo: tipo 1 = PrintingProcess
+
+        PrintingProcess* pr = dynamic_cast<PrintingProcess*>(downcasting);
+
+        if (pr != nullptr) {
+            // Agora posso acessar atributos específicos e métodos do tipo
+            pr->testeDown();
+        }
+    }
 
     // Executando e removendo processos
     while (!fila.empty()) {

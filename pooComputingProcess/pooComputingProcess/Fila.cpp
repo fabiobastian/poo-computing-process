@@ -81,3 +81,35 @@ Processo* Fila::findByPid(int pid)
 Nodo* Fila::getPrimeiro() const {
     return primeiro;
 }
+
+Processo* Fila::popByPid(int pid)
+{
+    if (primeiro == nullptr) return nullptr;
+
+    Nodo* atual = primeiro;
+    Nodo* anterior = nullptr;
+
+    // Procurar o nó
+    while (atual != nullptr && atual->processo->getPid() != pid) {
+        anterior = atual;
+        atual = atual->proximo;
+    }
+
+    if (atual == nullptr) return nullptr; // não encontrou
+
+    // Se for o primeiro da fila
+    if (atual == primeiro) {
+        primeiro = primeiro->proximo;
+        if (primeiro == nullptr) ultimo = nullptr; // fila ficou vazia
+    }
+    else {
+        anterior->proximo = atual->proximo;
+        if (atual == ultimo) ultimo = anterior; // era o último
+    }
+
+    tamanho--;
+    Processo* p = atual->processo;
+    delete atual;  // remove o nó, mas não o processo!
+
+    return p; // retorna o processo removido
+}

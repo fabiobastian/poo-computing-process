@@ -10,6 +10,11 @@ PrintingProcess::PrintingProcess(Fila* fila)
 	this->fila = fila;
 }
 
+void PrintingProcess::testeDown()
+{
+    std::cout << "DOWN FUNCIONANDO" << this->pid;
+}
+
 void PrintingProcess::execute()
 {
     std::cout << "===== Processos na fila =====" << std::endl;

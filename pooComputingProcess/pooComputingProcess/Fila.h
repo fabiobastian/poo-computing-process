@@ -16,7 +16,7 @@ public:
 	Processo* front(); // Retorna o primeiro processo da fila
 	Processo* findByPid(int pid); // procurar e retornar um processo especifico pelo PID
 	bool empty(); // true se a fila estiver vazia
-
+	Processo* popByPid(int pid);
 	Nodo* getPrimeiro() const;
 };
 

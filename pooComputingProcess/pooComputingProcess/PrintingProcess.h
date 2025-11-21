@@ -11,6 +11,7 @@ public:
 	PrintingProcess();
 	~PrintingProcess();
 	PrintingProcess(Fila* fila);
+	void testeDown();
 
 	void execute() override;
 };
