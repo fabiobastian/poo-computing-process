@@ -11,6 +11,12 @@ Processo::Processo(int tipo)
 	this->tipo = tipo;
 }
 
+Processo::Processo(int pid, int tipo)
+{
+	this->pid = pid;
+	this->tipo = tipo;
+}
+
 int Processo::getPid() const
 {
 	return this->pid;
@@ -19,5 +25,10 @@ int Processo::getPid() const
 int Processo::getTipo() const
 {
 	return this->tipo;
+}
+
+std::string Processo::serialize() const
+{
+	return std::to_string(pid) + ";" + std::to_string(tipo);
 }
 

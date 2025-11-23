@@ -1,18 +1,20 @@
 #include "PrintingProcess.h"
-#include <iostream>
+
+#define TIPO 4
 
 PrintingProcess::PrintingProcess(){}
 PrintingProcess::~PrintingProcess(){}
 
 PrintingProcess::PrintingProcess(Fila* fila)
-	: Processo(4)
+	: Processo(TIPO)
 {
 	this->fila = fila;
 }
 
-void PrintingProcess::testeDown()
+PrintingProcess::PrintingProcess(int pid, Fila* fila)
+    : Processo(pid, TIPO)
 {
-    std::cout << "DOWN FUNCIONANDO" << this->pid;
+    this->fila = fila;
 }
 
 void PrintingProcess::execute()
@@ -29,4 +31,30 @@ void PrintingProcess::execute()
     }
 
     std::cout << "=============================" << std::endl;
+}
+
+std::string PrintingProcess::serialize() const
+{
+    return Processo::serialize();
+}
+
+Processo* PrintingProcess::deserialize(const std::string& linha, Fila* fila)
+{
+    std::stringstream ss(linha);
+    std::string token;
+
+    // formato esperado: pid;tipo
+    int pid, tipo;
+
+    // pega pid
+    std::getline(ss, token, ';');
+    pid = std::stoi(token);
+
+    // pega tipo
+    std::getline(ss, token, ';');
+    tipo = std::stoi(token);
+
+    if (tipo != TIPO) return nullptr;
+
+    return new PrintingProcess(pid, fila);
 }

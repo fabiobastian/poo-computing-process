@@ -65,5 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="computation.txt" />
+    <Text Include="computationProcess.txt" />
   </ItemGroup>
 </Project>

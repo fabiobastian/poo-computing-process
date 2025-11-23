@@ -4,15 +4,18 @@
 class ComputingProcess : public Processo
 {
 private:
+	char operacao;
 	int num1;
 	int num2;
-	char operacao;
 
 public:
 	ComputingProcess();
 	~ComputingProcess();
-	ComputingProcess(float num1, float num2, char operacao);
+	ComputingProcess(char operacao, float num1, float num2);
+	ComputingProcess(int pid, char operacao, float num1, float num2);
 
 	void execute() override;
+	std::string serialize() const override;
+	static Processo* deserialize(const std::string& linha);
 };
 

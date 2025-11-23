@@ -11,8 +11,10 @@ public:
 	PrintingProcess();
 	~PrintingProcess();
 	PrintingProcess(Fila* fila);
-	void testeDown();
+	PrintingProcess(int pid, Fila* fila);
 
 	void execute() override;
+	std::string serialize() const override;
+	static Processo* deserialize(const std::string& linha, Fila* fila);
 };
 
