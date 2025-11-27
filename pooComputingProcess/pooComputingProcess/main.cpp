@@ -1,3 +1,5 @@
+#include "Sistema.h"
+
 #include "ComputingProcess.h"
 #include "WritingProcess.h"
 #include "ReadingProcess.h"
@@ -6,11 +8,17 @@
 
 using namespace std;
 
+/*
 void salvarFila(Fila* fila);
 void carregarFila(Fila* fila);
-
+*/
 int main()
 {
+    //sistema
+    Sistema sistema;
+    sistema.executar();
+
+    /*
     Fila fila;
 
     ComputingProcess* cp1 = new ComputingProcess('+', 50.0, 80.0);
@@ -57,12 +65,14 @@ int main()
         delete p;                  // desaloca o processo após executar
     }
     cout << "Fila esvaziada com sucesso!" << endl;
-
+*/
 
 	return 0;
 }
 
 
+//COLOQUEI ESSES METODOS NA CLASSE SISTEMA
+/*
 void salvarFila(Fila* fila)
 {
     std::ofstream arquivo("computationProcess.txt", std::ofstream::out);
@@ -140,4 +150,4 @@ void carregarFila(Fila* fila)
     }
 
     arquivo.close();
-}
+}*/
