@@ -125,7 +125,7 @@ void Sistema::criarProcessoGravacao() {
 	cout << "\nDigite o segundo operando:" << endl;
 	cin >> operandoDois;
 
-	string expr = operador + ";" + to_string(operandoUm) + ";" + to_string(operandoDois);
+	string expr = string(1, operador) + ";" + to_string(operandoUm) + ";" + to_string(operandoDois);
 	WritingProcess* wp1 = new WritingProcess(expr);
 	cout << "Processo do tipo gravacao criado." << endl;
 	fila.push(wp1);
