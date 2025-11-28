@@ -4,8 +4,8 @@
 #include "ReadingProcess.h"
 #include "PrintingProcess.h"
 #include "Fila.h"
-using namespace std;
 
+using namespace std;
 
 Sistema::Sistema() {
 	fila = Fila();
@@ -35,6 +35,14 @@ void Sistema::executar()
 			cout << "\nExecutar um processo especifico" << endl;
 			executarProcessoEspecifico();
 			break;
+		case 4:
+			cout << "\nGravar toda a fila no arquivo 'computationProcess.txt'" << endl;
+			salvarFila(&fila);
+			break;
+		case 5:
+			cout << "\nCarregar a fila a partir do arquivo 'computationProcess.txt'" << endl;
+			carregarFila(&fila);
+			break;
 		case 7:
 			cout << "Ate logo!";
 			return;
@@ -52,6 +60,8 @@ void Sistema::opcoesSistema() {
 	cout << "1 - Criar processo" << endl;
 	cout << "2 - Executar proximo" << endl;
 	cout << "3 - Executar um processo especifico" << endl;
+	cout << "4 - Gravar toda a fila no arquivo 'computationProcess.txt'" << endl;
+	cout << "5 - Carregar a fila a partir do arquivo 'computationProcess.txt'" << endl;
 	cout << "7 - Sair" << endl;
 	cout << "Escolha uma das opcoes acima: ";
 }
@@ -62,7 +72,7 @@ void Sistema::opcoesProcessos() {
 	cout << "2 - Gravacao" << endl;
 	cout << "3 - Leitura" << endl;
 	cout << "4 - Impressao" << endl;
-	cout << "7 - Sair" << endl;
+	cout << "7 - Voltar" << endl;
 	cout << "Escolha uma das opcoes acima: ";
 }
 
@@ -93,7 +103,7 @@ void Sistema::criarProcesso() {
 			criarProcessoImpressao();
 			break;
 		case 7:
-			cout << "Saiu";
+			cout << "Voltou";
 			return;
 			break;
 		default:
@@ -104,17 +114,22 @@ void Sistema::criarProcesso() {
 	}
 }
 
-// refatorar criarProcesso?
 void Sistema::criarProcessoGravacao() {
-	string expr = "+;100;20";
+	int operandoUm, operandoDois;
+	char operador;
+
+	cout << "\nDigite o simbolo  (+, -, * ou /) equivalente a operação do calculo:" << endl;
+	cin >> operador;
+	cout << "\nDigite o primeiro operando:" << endl;
+	cin >> operandoUm;
+	cout << "\nDigite o segundo operando:" << endl;
+	cin >> operandoDois;
+
+	string expr = operador + ";" + to_string(operandoUm) + ";" + to_string(operandoDois);
 	WritingProcess* wp1 = new WritingProcess(expr);
 	cout << "Processo do tipo gravacao criado." << endl;
 	fila.push(wp1);
 	cout << "Processo do tipo gravacao adicionado ao final da fila." << endl;
-	cout << "\n" + wp1->serialize();
-	salvarFila(&fila);
-	carregarFila(&fila);
-	cout << "Fila atualizada." << endl;
 }
 
 void Sistema::criarProcessoLeitura() {
@@ -122,10 +137,6 @@ void Sistema::criarProcessoLeitura() {
 	cout << "Processo do tipo leitura criado." << endl;
 	fila.push(rp1);
 	cout << "Processo do tipo leitura adicionado ao final da fila." << endl;
-	cout << "\n" + rp1->serialize();
-	salvarFila(&fila);
-	carregarFila(&fila);
-	cout << "Fila atualizada." << endl;
 }
 
 void Sistema::criarProcessoImpressao() {
@@ -133,53 +144,39 @@ void Sistema::criarProcessoImpressao() {
 	cout << "Processo do tipo impressao criado." << endl;
 	fila.push(pp1);
 	cout << "Processo do tipo impressao adicionado ao final da fila." << endl;
-	cout << "\n" + pp1->serialize();
-	salvarFila(&fila);
-	carregarFila(&fila);
-	cout << "Fila atualizada." << endl;
 }
 
 void Sistema::criarProcessoCalculo() {
 	int operandoUm, operandoDois;
 	char expressao;
+
 	cout << "\nDigite o simbolo  (+, -, * ou /) equivalente a operação do calculo:" << endl;
 	cin >> expressao;
 	cout << "\nDigite o primeiro operando:" << endl;
 	cin >> operandoUm;
 	cout << "\nDigite o segundo operando:" << endl;
 	cin >> operandoDois;
+
 	ComputingProcess* cp1 = new ComputingProcess(expressao, operandoUm, operandoDois);
 	cout << "Processo do tipo calculo criado." << endl;
 	fila.push(cp1);
 	cout << "Processo do tipo calculo adicionado ao final da fila." << endl;
-	cout << "\n" + cp1->serialize();
-	salvarFila(&fila);
-	carregarFila(&fila);
-	cout << "Fila atualizada." << endl;
 }
 
 void Sistema::executarProximo() {
+	Processo* primeiro = fila.pop();
 
-	int buscaPid = fila.front()->getPid();
-	cout << "\nPrimeiro da fila (front): PID = " << buscaPid << endl;
-	// Procurando um processo específico
-	Processo* achado = fila.findByPid(buscaPid);
-	int pid = achado->getPid();
+	if (primeiro == nullptr) {
+		cout << "A fila está vazia, tente adicionar alguns Processos." << endl;
+		return;
+	}
 
-	if (achado != nullptr)
-		cout << "Processo encontrado PID = " << pid << endl;
-	else
-		cout << "Processo PID " << buscaPid << " não encontrado.\n";
+	int pid = primeiro->getPid();
+	cout << "Processo encontrado PID = " << pid << endl;
 
-	achado = fila.pop();											// remove da fila
-	achado->execute();												// simula execução
+	primeiro->execute();
 	cout << "Processo PID = " << pid << " executado.\n" << endl;
-	delete achado;													// desaloca o processo após executar
-
-	//encapsular essas 3 linhas abaixo para refatorar?
-	salvarFila(&fila);
-	carregarFila(&fila);
-	cout << "Fila atualizada." << endl;
+	delete primeiro;
 }
 
 void Sistema::executarProcessoEspecifico() {
@@ -187,31 +184,27 @@ void Sistema::executarProcessoEspecifico() {
 	cout << "\nDigite o PID do processo a ser executado" << endl;
 	int buscaPid;
 	cin >> buscaPid;
+
 	// Procurando um processo específico
-	Processo* achado = fila.findByPid(buscaPid);
+	Processo* achado = fila.popByPid(buscaPid);
+	
+	if (achado == nullptr) {
+		cout << "Processo não encontrado com o PID = " << buscaPid << endl;
+		return;
+	}
+
 	int pid = achado->getPid();
+	cout << "Processo encontrado PID = " << pid << endl;
 
-	if (achado != nullptr)
-		cout << "Processo encontrado PID = " << pid << endl;
-	else
-		cout << "Processo PID " << buscaPid << " não encontrado.\n";
-
-	achado = fila.pop();											// remove da fila
-	achado->execute();												// simula execução
+	achado->execute();
 	cout << "Processo PID = " << pid << " executado.\n" << endl;
-	delete achado;													// desaloca o processo após executar
-
-	//encapsular essas 3 linhas abaixo para refatorar?
-	salvarFila(&fila);
-	carregarFila(&fila);
-	cout << "Fila atualizada." << endl;
+	delete achado;
 }
 
-//estes metodos deveriam estar na classe fila?
 
 void Sistema::salvarFila(Fila* fila)
 {
-	std::ofstream arquivo("computationProcess.txt", std::ofstream::out);
+	std::ofstream arquivo("computationProcess.txt", std::ios::app);
 
 	if (!arquivo.is_open()) {
 		std::cout << "Erro ao abrir arquivo para escrita! 'computationProcess.txt'\n";
@@ -285,4 +278,9 @@ void Sistema::carregarFila(Fila* fila)
 	}
 
 	arquivo.close();
+
+	std::ofstream limpar("computationProcess.txt", std::ios::trunc);
+	limpar.close();
+
+	std::cout << "Arquivo carregado e limpo com sucesso!" << std::endl;
 }
