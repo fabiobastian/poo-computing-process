@@ -129,6 +129,7 @@
     <ClInclude Include="PrintingProcess.h" />
     <ClInclude Include="Processo.h" />
     <ClInclude Include="ReadingProcess.h" />
+    <ClInclude Include="Sistema.h" />
     <ClInclude Include="WritingProcess.h" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +140,7 @@
     <ClCompile Include="PrintingProcess.cpp" />
     <ClCompile Include="Processo.cpp" />
     <ClCompile Include="ReadingProcess.cpp" />
+    <ClCompile Include="Sistema.cpp" />
     <ClCompile Include="WritingProcess.cpp" />
   </ItemGroup>
   <ItemGroup>
