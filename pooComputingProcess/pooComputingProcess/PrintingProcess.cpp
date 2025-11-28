@@ -26,7 +26,8 @@ void PrintingProcess::execute()
     while (atual != nullptr) {
         Processo* p = atual->processo;
         std::cout << "PID: " << p->getPid()
-            << " | Tipo: " << p->getTipo() << std::endl;
+            << " | Tipo: " << p->getTipo() 
+            << " | Serialize: " << p->serialize() << std::endl;
         atual = atual->proximo;
     }
 
